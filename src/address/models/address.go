@@ -1,16 +1,21 @@
 package models
 
-import "errors"
+import "fmt"
 
 var (
-	AddressList map[string]*Address
+	AddressList []Address
 )
 
 func init() {
-	AddressList = make(map[string]*Address)
-	u := Address{"81543", "Konradinstr", "Munich"}
-	AddressList["81543"] = &u
-	AddressList["80636"] = &u
+	address := Address{"81543", "Konradinstr", "Munich"}
+	address2 := Address{"80636", "Konradinstr", "Munich"}
+	AddressList = make([]Address, 6)
+	AddressList[0] = address
+	AddressList[1] = address
+	AddressList[2] = address
+	AddressList[3] = address2
+	AddressList[4] = address2
+	AddressList[5] = address2
 }
 
 type Address struct {
@@ -19,13 +24,17 @@ type Address struct {
 	City     string
 }
 
-func GetAddress(postCode string) (u *Address, err error) {
-	if u, ok := AddressList[postCode]; ok {
-		return u, nil
+func GetAddress(postCode string) (a []Address, err error) {
+	result := make([]Address, 0)
+	for _, address := range AddressList {
+		fmt.Println("shit", address)
+		if address.PostCode == postCode {
+			result = append(result, address)
+		}
 	}
-	return nil, errors.New("User not exists")
+	return result, nil
 }
 
-func GetAllAddresses() map[string]*Address {
+func GetAllAddresses() []Address {
 	return AddressList
 }
