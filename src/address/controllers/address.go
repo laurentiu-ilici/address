@@ -17,8 +17,12 @@ type AddressController struct {
 // @Success 200 {object} models.User
 // @router / [get]
 func (u *AddressController) GetAll() {
-	addresses := getAllAddresses()
-	u.Data["json"] = addresses
+	addresses, err := getAllAddresses()
+	if err != nil {
+		u.Data["json"] = err.Error()
+	} else {
+		u.Data["json"] = addresses
+	}
 	u.ServeJSON()
 }
 
@@ -41,10 +45,10 @@ func (u *AddressController) Get() {
 	u.ServeJSON()
 }
 
-func getAddress(postCode string) (a []models.Address, err error) {
-	return repository.FindByPostCode(postCode), nil
+func getAddress(postCode string) ([]models.Address, error) {
+	return repository.FindByPostCode(postCode)
 }
 
-func getAllAddresses() []models.Address {
+func getAllAddresses() ([]models.Address, error) {
 	return repository.GetAllAddresses()
 }
