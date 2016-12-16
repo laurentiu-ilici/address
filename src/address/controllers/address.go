@@ -7,6 +7,11 @@ import (
 	"github.com/astaxie/beego"
 )
 
+type Repository interface {
+	FindByPostCode(postCode string) ([]models.Address, error)
+	GetAllAddresses() ([]models.Address, error)
+}
+
 // AddressController about Users
 type AddressController struct {
 	beego.Controller

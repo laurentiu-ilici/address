@@ -19,8 +19,8 @@ func init() {
 	AddressList[1] = address2
 }
 
-func Migrate() {
-	db, err := gorm.Open("postgres", "host=localhost user=postgres dbname=address sslmode=disable password=password")
+func Migrate(connectionString string) {
+	db, err := gorm.Open("postgres", connectionString)
 	defer db.Close()
 
 	if err != nil {
