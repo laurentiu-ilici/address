@@ -6,18 +6,22 @@ import (
 	"github.com/astaxie/beego"
 )
 
+// AddressRepository needed to get addresses
 type AddressRepository interface {
 	FindByPostCode(postCode string) ([]models.Address, error)
 	GetAllAddresses() ([]models.Address, error)
 }
 
-// AddressController about Users
+// AddressController about Addresses
 type AddressController struct {
 	beego.Controller
 }
 
-// @GetAll addresses
-// @Description get all Users
+var addressRepository AddressRepository
+
+// GetAll addresses
+// @Title get all addresses
+// @Description get all Addresses
 // @Success 200 {object} models.User
 // @router / [get]
 func (u *AddressController) GetAll() {
@@ -30,10 +34,11 @@ func (u *AddressController) GetAll() {
 	u.ServeJSON()
 }
 
-// @Title Get addresses that have this postcode
+// Get addresses that have this postcode
+// @Title get addresses by post code
 // @Description get address by postcode
-// @Param	postcode		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.User
+// @Param postcode
+// @Success 200 {object} models.Address
 // @Failure 403 :postcode is empty
 // @router /:postcode [get]
 func (u *AddressController) Get() {
