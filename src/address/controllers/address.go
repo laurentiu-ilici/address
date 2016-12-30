@@ -2,12 +2,11 @@ package controllers
 
 import (
 	"address/models"
-	"address/repository"
 
 	"github.com/astaxie/beego"
 )
 
-type Repository interface {
+type AddressRepository interface {
 	FindByPostCode(postCode string) ([]models.Address, error)
 	GetAllAddresses() ([]models.Address, error)
 }
@@ -22,7 +21,7 @@ type AddressController struct {
 // @Success 200 {object} models.User
 // @router / [get]
 func (u *AddressController) GetAll() {
-	addresses, err := getAllAddresses()
+	addresses, err := addressRepository.GetAllAddresses()
 	if err != nil {
 		u.Data["json"] = err.Error()
 	} else {
@@ -40,7 +39,7 @@ func (u *AddressController) GetAll() {
 func (u *AddressController) Get() {
 	postcode := u.GetString(":postcode")
 	if postcode != "" {
-		address, err := getAddress(postcode)
+		address, err := addressRepository.FindByPostCode(postcode)
 		if err != nil {
 			u.Data["json"] = err.Error()
 		} else {
@@ -48,12 +47,4 @@ func (u *AddressController) Get() {
 		}
 	}
 	u.ServeJSON()
-}
-
-func getAddress(postCode string) ([]models.Address, error) {
-	return repository.FindByPostCode(postCode)
-}
-
-func getAllAddresses() ([]models.Address, error) {
-	return repository.GetAllAddresses()
 }
