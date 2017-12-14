@@ -11,7 +11,8 @@ type AddressRepository struct {
 	ConnectionString string
 }
 
-// FindByPostCode return a list of addresses which are valid for the given post code
+// FindByPostCode return a list of addresses 
+// which are valid for the given post code
 func (repo AddressRepository) FindByPostCode(postCode string) ([]models.Address, error) {
 	db, err := gorm.Open("postgres", repo.ConnectionString)
 	defer db.Close()
